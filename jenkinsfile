@@ -42,26 +42,16 @@ pipeline {
 
         stage('Test K8s Connection') {
             steps {
-                withCredentials([string(credentialsId: 'kubeconfig-hotstar', variable: 'KUBECONFIG_CONTENT')]) {
-                    sh '''
-                    cat <<EOF > kubeconfig
-$KUBECONFIG_CONTENT
-EOF
-                    export KUBECONFIG=$(pwd)/kubeconfig
-                    kubectl get nodes
-                    '''
+                withCredentials([file(credentialsId: 'kubeconfig-hotstar', variable: 'KUBECONFIG')]) {
+                    sh 'kubectl get nodes'
                 }
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                withCredentials([string(credentialsId: 'kubeconfig-hotstar', variable: 'KUBECONFIG_CONTENT')]) {
+                withCredentials([file(credentialsId: 'kubeconfig-hotstar', variable: 'KUBECONFIG')]) {
                     sh '''
-                    cat <<EOF > kubeconfig
-$KUBECONFIG_CONTENT
-EOF
-                    export KUBECONFIG=$(pwd)/kubeconfig
                     kubectl apply -f k8s/deployment.yaml
                     kubectl apply -f k8s/service.yaml
                     '''
