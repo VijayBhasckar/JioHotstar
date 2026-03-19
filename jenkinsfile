@@ -11,17 +11,12 @@ pipeline{
             sh 'mvn clean install'
             }
         }
-        stage('building custome image'){
+        stage('building custom image'){
             steps{
                   sh '''
                     docker build -t subhashrokkala/hotstar:${BUILD_NUMBER} .
                     docker tag subhashrokkala/hotstar:${BUILD_NUMBER} subhashrokkala/hotstar:latest
                   '''    
-            }
-        }
-        stage('pushing image to docker hub'){
-            steps{
-                sh 'docker push subhashrokkala/hotstar:latest'
             }
         }
         stage('Docker Push') {
