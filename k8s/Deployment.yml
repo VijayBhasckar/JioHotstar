@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotstar-deployment
+  labels:
+    app: ott
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: ott
+  template:
+    metadata:
+      labels:
+        app: ott
+    spec:
+      containers:
+      - name: hotstar-container
+        image: subhashrokkala/hotstar:${BUILD_NUMBER}
+        ports:
+        - containerPort: 8080
