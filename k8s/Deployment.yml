@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: hotstar-container
-        image: subhashrokkala/hotstar:${BUILD_NUMBER}
+        image: subhashrokkala/hotstar:14
         ports:
         - containerPort: 8080
