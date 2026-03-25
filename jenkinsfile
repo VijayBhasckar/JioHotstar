@@ -62,12 +62,12 @@ pipeline {
         post {
            success {
                  emailext to: 'mr.siddu1432@gmail.com',
-                     subject: "Pipeline SUCCESS",
+                     subject: " ${env.JOB_NAME} Pipeline SUCCESS",
                      body: "Build ${BUILD_NUMBER} succeeded"
            }
            failure {
                 emailext to: 'mr.siddu1432@gmail.com',
-                subject: "Pipeline FAILED",
+                subject: " ${env.JOB_NAME} Pipeline FAILED",
                 body: """
                 Build ${BUILD_NUMBER} failed
                 Failed Stage: ${env.STAGE_NAME}
