@@ -14,6 +14,13 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
+        stage('deploying to nexus'){
+            steps{
+                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk17', maven: 'maven3', traceability: true) {
+                sh 'mvn deploy'
+                }
+            }
+        }
 
         stage('Docker Build') {
             steps {
