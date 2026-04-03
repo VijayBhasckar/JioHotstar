@@ -31,8 +31,8 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
-                docker build -t subhashrokkala/hotstar:${BUILD_NUMBER} .
-                docker tag subhashrokkala/hotstar:${BUILD_NUMBER} subhashrokkala/hotstar:latest
+                docker build -t vijaybhasckar/hotstar:${BUILD_NUMBER} .
+                docker tag vijaybhasckar/hotstar:${BUILD_NUMBER} vijaybhasckar/hotstar:latest
                 '''
             }
         }
@@ -40,14 +40,14 @@ pipeline {
         stage('Docker Push') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'DockerCred',
+                    credentialsId: 'VijayDockerCred',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    docker push subhashrokkala/hotstar:${BUILD_NUMBER}
-                    docker push subhashrokkala/hotstar:latest
+                    docker push vijaybhasckar/hotstar:${BUILD_NUMBER}
+                    docker push vijaybhasckar/hotstar:latest
                     docker logout
                     '''
                 }
