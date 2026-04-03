@@ -31,9 +31,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
-                docker build -t vijayimg .
-               docker tag vijayimg imvijaybhaskar/vijayimg:${BUILD_NUMBER}
-              
+                docker build -t imvijaybhaskar/hotstar:${BUILD_NUMBER} .
 
 
                 '''
