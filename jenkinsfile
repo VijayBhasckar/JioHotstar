@@ -61,7 +61,7 @@ pipeline {
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                     docker push subhashrokkala/hotstar:${BUILD_NUMBER}
-                    docker push ubhashrokkala/hotstar:latest
+                    docker push subhashrokkala/hotstar:latest
                     docker logout
                     '''
                 }
