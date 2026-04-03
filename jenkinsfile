@@ -32,7 +32,8 @@ pipeline {
             steps {
                 sh '''
                 docker build -t vijaybhasckar/hotstar:${BUILD_NUMBER} .
-                docker tag vijaybhasckar/hotstar:${BUILD_NUMBER} vijaybhasckar/hotstar:latest
+
+
                 '''
             }
         }
@@ -47,7 +48,7 @@ pipeline {
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                     docker push vijaybhasckar/hotstar:${BUILD_NUMBER}
-                    docker push vijaybhasckar/hotstar:latest
+                    
                     docker logout
                     '''
                 }
