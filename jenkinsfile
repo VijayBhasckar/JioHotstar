@@ -10,7 +10,13 @@ pipeline {
 
         stage('Git Checkout') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitCreds', url: 'https://github.com/Subhash-Rokkala/hotstar.git']])
+                checkout scmGit(
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[
+                        credentialsId: 'GitCreds',
+                        url: 'https://github.com/Subhash-Rokkala/hotstar.git'
+                    ]]
+                )
             }
         }
 
@@ -19,13 +25,16 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-         
 
-        }
-        stage('deploying to nexus'){
-            steps{
-                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk17', maven: 'maven3', traceability: true) {
-                sh 'mvn deploy'
+        stage('Deploying to Nexus') {
+            steps {
+                withMaven(
+                    globalMavenSettingsConfig: 'settings.xml',
+                    jdk: 'jdk17',
+                    maven: 'maven3',
+                    traceability: true
+                ) {
+                    sh 'mvn deploy'
                 }
             }
         }
@@ -55,7 +64,8 @@ pipeline {
                 }
             }
         }
-         stage('Test K8s Connection') {
+
+        stage('Test K8s Connection') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
                     sh 'kubectl get nodes'
@@ -73,23 +83,28 @@ pipeline {
                 }
             }
         }
-  }
-        post {
-           success {
-                 emailext to: 'mr.siddu1432@gmail.com',
-                     subject: " ${env.JOB_NAME} Pipeline SUCCESS",
-                     body: "Build ${BUILD_NUMBER} succeeded"
-           }
-           failure {
-                emailext to: 'mr.siddu1432@gmail.com',
-                subject: " ${env.JOB_NAME} Pipeline FAILED",
+    }
+
+    post {
+        success {
+            emailext(
+                to: 'mr.siddu1432@gmail.com',
+                subject: "${env.JOB_NAME} Pipeline SUCCESS",
+                body: "Build ${BUILD_NUMBER} succeeded"
+            )
+        }
+        failure {
+            emailext(
+                to: 'mr.siddu1432@gmail.com',
+                subject: "${env.JOB_NAME} Pipeline FAILED",
                 body: """
                 Build ${BUILD_NUMBER} failed
                 Failed Stage: ${env.STAGE_NAME}
 
                 Check logs:
                 ${env.BUILD_URL}
-           """
-         }
-      }
+                """
+            )
+        }
+    }
 }
