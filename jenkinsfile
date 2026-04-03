@@ -31,7 +31,9 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh '''
-                docker build -t vijaybhasckar/hotstar:${BUILD_NUMBER} .
+                docker build -t vijayimg .
+               docker tag vijayimg imvijaybhaskar/vijayimg:${BUILD_NUMBER}
+              
 
 
                 '''
@@ -47,7 +49,7 @@ pipeline {
                 )]) {
                     sh '''
                     echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                    docker push vijaybhasckar/hotstar:${BUILD_NUMBER}
+                    docker push imvijaybhaskar/hotstar:${BUILD_NUMBER}
                     
                     docker logout
                     '''
